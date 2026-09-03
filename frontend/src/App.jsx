@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import Landing from './pages/Landing';
 import Login from './pages/Login';
 import PatientLayout from './layouts/PatientLayout';
 import CaregiverLayout from './layouts/CaregiverLayout';
@@ -23,6 +24,7 @@ import ReminderManagement from './pages/caregiver/ReminderManagement';
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       
       {/* Patient Routes */}
@@ -46,7 +48,7 @@ function App() {
       </Route>
 
       {/* Fallback */}
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
