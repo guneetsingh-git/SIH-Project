@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-text antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer components {
+  /* Minimal reusable button styling with large touch targets */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-xl font-semibold transition-colors duration-200 min-h-[48px] px-6 py-2 outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  
+  .btn-primary {
+    @apply bg-accent text-white hover:bg-emerald-700 focus:ring-accent;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-primary border-2 border-primary hover:bg-slate-50 focus:ring-primary;
+  }
+  
+  .btn-outline {
+    @apply bg-transparent text-text border-2 border-slate-300 hover:border-slate-400 focus:ring-slate-300;
+  }
+}
+
+/* Custom scrollbar for desktop accessibility */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-slate-100;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full border-[3px] border-solid border-slate-100;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400;
+}
