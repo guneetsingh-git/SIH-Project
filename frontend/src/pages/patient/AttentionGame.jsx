@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
+import GameFeedback from '../../components/GameFeedback';
 import { saveGameProgress, getGames } from '../../utils/storage';
 import { calculateNewDifficulty, getDifficultyMessage } from '../../utils/adaptiveDifficulty';
 
@@ -35,7 +36,10 @@ export default function AttentionGame() {
     const isCorrect = item.name === 'cup'; // Hardcoded for demo
     const reactionTime = (Date.now() - startTime.current) / 1000;
     
-    setFeedback(isCorrect ? "Correct!" : "Good try. Look for the cup again.");
+    setFeedback({
+      message: isCorrect ? "Correct!" : "Good try. Look for the cup again.",
+      correct: isCorrect
+    });
     
     if (isCorrect || !isCorrect) {
       setTimeout(() => {
@@ -80,9 +84,7 @@ export default function AttentionGame() {
       {stage === STAGES.QUESTION && (
         <div className="w-full text-center animate-fade-in">
           {feedback ? (
-            <div className={`text-4xl font-bold my-20 p-8 rounded-2xl ${feedback === "Correct!" ? 'text-accent bg-emerald-50' : 'text-slate-600 bg-slate-100'}`}>
-              {feedback}
-            </div>
+            <GameFeedback message={feedback.message} correct={feedback.correct} />
           ) : (
             <>
               <h2 className="text-4xl font-bold text-primary mb-12">Find the cup</h2>

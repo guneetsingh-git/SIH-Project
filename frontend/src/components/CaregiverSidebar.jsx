@@ -21,13 +21,13 @@ export default function CaregiverSidebar() {
             to={item.to}
             end={item.exact}
             className={({ isActive }) => cn(
-              "flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors",
+              "flex items-center gap-4 px-4 py-3 min-h-[64px] rounded-xl font-medium transition-all duration-200",
               isActive 
-                ? "bg-primary text-white" 
-                : "text-slate-600 hover:bg-slate-50 hover:text-primary"
+                ? "bg-gradient-to-r from-primary to-blue-900 text-white shadow-glow-primary" 
+                : "text-slate-600 hover:bg-blue-50 hover:text-primary"
             )}
           >
-            <item.icon size={20} />
+            <item.icon size={40} />
             <span>{item.label}</span>
           </NavLink>
         ))}

@@ -9,7 +9,7 @@ export default function GameCard({ title, subtitle, icon, difficulty, to }) {
   return (
     <Card className="flex flex-col h-full border-2 border-transparent hover:border-slate-200 transition-all">
       <div className="flex items-start justify-between mb-4">
-        <div className="bg-slate-100 w-16 h-16 rounded-2xl flex items-center justify-center text-4xl">
+        <div className="bg-gradient-to-br from-slate-100 to-blue-50 w-20 h-20 rounded-2xl flex items-center justify-center text-5xl">
           {icon}
         </div>
         <div className="bg-blue-50 text-primary px-3 py-1 rounded-full text-sm font-semibold">

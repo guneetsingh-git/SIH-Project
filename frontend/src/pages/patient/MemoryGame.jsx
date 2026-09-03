@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
+import GameFeedback from '../../components/GameFeedback';
 import { saveGameProgress, getGames } from '../../utils/storage';
 import { calculateNewDifficulty, getDifficultyMessage } from '../../utils/adaptiveDifficulty';
 
@@ -52,7 +53,10 @@ export default function MemoryGame() {
     const isCorrect = item.id === targetItem.id;
     const reactionTime = (Date.now() - startTime.current) / 1000;
     
-    setFeedback(isCorrect ? "Well done!" : "That's okay. Let's try again.");
+    setFeedback({
+      message: isCorrect ? "Well done!" : "That's okay. Let's try again.",
+      correct: isCorrect
+    });
     
     setTimeout(() => {
       // Calculate results
@@ -107,9 +111,7 @@ export default function MemoryGame() {
       {stage === STAGES.QUESTION && (
         <div className="w-full text-center animate-fade-in">
           {feedback ? (
-            <div className={`text-4xl font-bold my-20 p-8 rounded-2xl ${feedback === "Well done!" ? 'text-accent bg-emerald-50' : 'text-slate-600 bg-slate-100'}`}>
-              {feedback}
-            </div>
+            <GameFeedback message={feedback.message} correct={feedback.correct} />
           ) : (
             <>
               <h2 className="text-3xl font-bold text-text mb-12">Where was the {targetItem.name}?</h2>
