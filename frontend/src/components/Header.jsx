@@ -26,8 +26,8 @@ export default function Header({ title, showOffline = true }) {
           <div className="text-sm font-medium text-slate-600 hidden sm:block">
             {role === 'patient' ? 'Patient View' : 'Caregiver View'}
           </div>
-          <Button variant="ghost" onClick={handleLogout} className="px-3" aria-label="Log out">
-            <LogOut size={24} className="text-slate-600" />
+          <Button variant="ghost" onClick={handleLogout} className="touch-target px-3" aria-label="Log out">
+            <LogOut size={40} className="text-slate-700" />
           </Button>
         </div>
       </div>

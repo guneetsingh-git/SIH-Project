@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
+import SplashScreen from './components/SplashScreen';
 import PatientLayout from './layouts/PatientLayout';
 import CaregiverLayout from './layouts/CaregiverLayout';
 
@@ -21,6 +22,13 @@ import PatientDetail from './pages/caregiver/PatientDetail';
 import ReminderManagement from './pages/caregiver/ReminderManagement';
 
 function App() {
+  const [showSplash, setShowSplash] = useState(true);
+  const dismissSplash = useCallback(() => setShowSplash(false), []);
+
+  if (showSplash) {
+    return <SplashScreen onFinish={dismissSplash} />;
+  }
+
   return (
     <Routes>
       <Route path="/login" element={<Login />} />

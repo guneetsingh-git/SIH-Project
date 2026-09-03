@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
-import { Brain, CheckCircle2, Clock, Calendar } from 'lucide-react';
+import { Brain } from 'lucide-react';
 import { getReminders, toggleReminder } from '../../utils/storage';
 
 export default function PatientHome() {
@@ -32,7 +32,7 @@ export default function PatientHome() {
       <div className="mb-2">
         <h2 className="text-3xl font-bold text-primary mb-6">Good Morning, {patientName}</h2>
         
-        <Card className="bg-blue-50 border-blue-100">
+        <Card className="bg-gradient-to-br from-blue-50 to-white border-blue-100">
           <p className="text-xl text-text font-medium mb-6">How are you feeling today?</p>
           <div className="flex gap-4">
             <Button variant="secondary" className="flex-1 py-4 text-2xl border-none shadow-sm">
@@ -52,7 +52,7 @@ export default function PatientHome() {
         <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Today's Activity</h3>
         <Card className="border-l-8 border-l-accent flex flex-col sm:flex-row items-center justify-between p-6 gap-6">
           <div className="flex items-center gap-6">
-            <div className="bg-emerald-50 text-accent p-4 rounded-2xl">
+            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 text-accent-dark p-5 rounded-2xl min-w-[64px] min-h-[64px] flex items-center justify-center">
               <Brain size={48} />
             </div>
             <div>
@@ -83,7 +83,7 @@ export default function PatientHome() {
               className={`p-5 flex items-center justify-between ${reminder.completed ? 'opacity-75' : ''}`}
             >
               <div className="flex items-center gap-4">
-                <div className={`p-3 rounded-full ${reminder.completed ? 'bg-emerald-50 text-accent' : 'bg-blue-50 text-primary'}`}>
+                <div className={`flex items-center justify-center min-w-[64px] min-h-[64px] text-4xl rounded-full transition-colors duration-200 ${reminder.completed ? 'bg-emerald-50 text-accent-dark shadow-glow' : 'bg-blue-50 text-primary'}`}>
                   {reminder.type === 'Medicine' ? '💊' : reminder.type === 'Water' ? '💧' : '📅'}
                 </div>
                 <div>

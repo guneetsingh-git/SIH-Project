@@ -12,7 +12,7 @@ export default function Card({
     <div 
       className={cn(
         "bg-white rounded-2xl shadow-sm border border-slate-100 p-6",
-        interactive && "cursor-pointer hover:shadow-md transition-shadow active:scale-[0.98]",
+        interactive && "cursor-pointer transition-all duration-200 hover:shadow-glow-primary hover:border-secondary active:scale-[0.98]",
         className
       )}
       onClick={onClick}
