@@ -8,7 +8,7 @@ import { OfflineProvider } from './context/OfflineContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/SmritiCare">
       <AuthProvider>
         <OfflineProvider>
           <App />

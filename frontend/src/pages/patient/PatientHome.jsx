@@ -34,14 +34,14 @@ export default function PatientHome() {
         
         <Card className="bg-gradient-to-br from-blue-50 to-white border-blue-100">
           <p className="text-xl text-text font-medium mb-6">How are you feeling today?</p>
-          <div className="flex gap-4">
-            <Button variant="secondary" className="flex-1 py-4 text-2xl border-none shadow-sm">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <Button variant="secondary" className="min-w-0 px-2 md:px-6 py-4 text-xl md:text-2xl border-none shadow-sm">
               <span className="mr-2">🙂</span> Good
             </Button>
-            <Button variant="secondary" className="flex-1 py-4 text-2xl border-none shadow-sm">
+            <Button variant="secondary" className="min-w-0 px-2 md:px-6 py-4 text-xl md:text-2xl border-none shadow-sm">
               <span className="mr-2">😐</span> Okay
             </Button>
-            <Button variant="secondary" className="flex-1 py-4 text-2xl border-none shadow-sm">
+            <Button variant="secondary" className="col-span-2 md:col-span-1 min-w-0 px-2 md:px-6 py-4 text-xl md:text-2xl border-none shadow-sm">
               <span className="mr-2">😟</span> Not Good
             </Button>
           </div>
