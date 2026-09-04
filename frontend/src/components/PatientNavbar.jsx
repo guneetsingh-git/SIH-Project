@@ -12,8 +12,13 @@ export default function PatientNavbar() {
   ];
 
   return (
+<<<<<<< Updated upstream
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 pb-safe z-40 md:sticky md:top-20 md:border-t-0 md:border-r md:w-64 md:h-[calc(100vh-5rem)] md:bottom-auto md:bg-transparent md:flex-col">
       <div className="flex justify-around items-center h-24 md:flex-col md:justify-start md:h-full md:p-4 md:gap-4 md:bg-white">
+=======
+    <nav className="hidden lg:block lg:static lg:w-64 lg:shrink-0 lg:h-auto lg:bg-white lg:border-r-2 lg:border-slate-200">
+      <div className="flex justify-around items-center h-20 md:flex-col md:justify-start md:h-[calc(100vh-5rem)] md:sticky md:top-20 md:p-4 md:gap-3">
+>>>>>>> Stashed changes
         {navItems.map((item) => (
           <NavLink
             key={item.to}

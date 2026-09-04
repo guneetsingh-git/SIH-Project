@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="50%" stop-color="#0284C7" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+    <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047" />
+      <stop offset="100%" stop-color="#FF5E36" />
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="46" fill="#0F172A" stroke="url(#brainGrad)" stroke-width="4" />
+  <path d="M48 24C38 24 30 30 30 40C30 44 32 48 34 50C29 53 26 59 26 65C26 74 34 80 44 80C46 80 48 79.5 50 78.5" stroke="url(#brainGrad)" stroke-width="4" stroke-linecap="round" fill="none" />
+  <path d="M52 24C62 24 70 30 70 40C70 44 68 48 66 50C71 53 74 59 74 65C74 74 66 80 56 80C54 80 52 79.5 50 78.5" stroke="url(#brainGrad)" stroke-width="4" stroke-linecap="round" fill="none" />
+  <path d="M54 22L38 48H52L46 76L66 44H50L54 22Z" fill="url(#boltGrad)" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round" />
+</svg>

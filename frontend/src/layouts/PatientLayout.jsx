@@ -6,6 +6,7 @@ import VoiceButton from '../components/VoiceButton';
 import LoginPanel from '../components/LoginPanel';
 import { useAuth } from '../context/AuthContext';
 
+<<<<<<< Updated upstream
 function PatientLoginOverlay() {
   const navigate = useNavigate();
 
@@ -58,6 +59,47 @@ export default function PatientLayout() {
       </div>
 
       <div className="flex-1 flex flex-col md:flex-row md:pt-20">
+=======
+export default function PatientLayout() {
+  const auth = useAuth() || {};
+  const { role, user, login } = auth;
+  
+  // Local state to guarantee the modal closes immediately upon clicking
+  const [isDismissed, setIsDismissed] = useState(false);
+  const [selectedLang, setSelectedLang] = useState('as');
+
+  const languages = [
+    { code: 'as', label: 'অসমীয়া (Assamese)' },
+    { code: 'bn', label: 'বাংলা (Bengali)' },
+    { code: 'mni', label: 'মৈতৈলোন্ (Manipuri)' },
+    { code: 'en', label: 'English' },
+    { code: 'hi', label: 'हिंदी (Hindi)' }
+  ];
+
+  const handleStart = () => {
+    // 1. Call login compatible with both object or role string
+    if (typeof login === 'function') {
+      try {
+        login('patient', { name: 'Mrs. Sharma', gender: 'female' });
+      } catch (err) {
+        login('patient', { name: 'Mrs. Sharma', gender: 'female', lang: selectedLang });
+      }
+    }
+    // 2. Save language & dismiss modal immediately
+    localStorage.setItem('smriti_lang', selectedLang);
+    localStorage.setItem('smriti_patient_active', 'true');
+    setIsDismissed(true);
+  };
+
+  // Show modal only if unauthenticated AND user hasn't tapped start yet
+  const showModal = !isDismissed && !(role === 'patient' || user?.role === 'patient' || localStorage.getItem('smriti_patient_active') === 'true');
+
+  return (
+    <div className="min-h-screen bg-[#FAF7F2] flex flex-col pt-32 md:pt-20">
+      <Header title="স্মৃতি সেতু • Smriti Setu" />
+      
+      <div className="flex-1 flex w-full pb-24 lg:pb-8">
+>>>>>>> Stashed changes
         <PatientNavbar />
         
         <main className="flex-1 px-4 py-8 pb-32 md:px-8 md:pb-8 max-w-4xl mx-auto w-full">
