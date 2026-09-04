@@ -1,103 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import Card from '../../components/Card';
-import Button from '../../components/Button';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Brain } from 'lucide-react';
-import { getReminders, toggleReminder } from '../../utils/storage';
+import { Brain, MessageSquare, Heart, Clock } from 'lucide-react';
 
 export default function PatientHome() {
   const navigate = useNavigate();
-  const [reminders, setReminders] = useState([]);
-  
-  // Simulated patient state
   const patientName = "Mrs. Sharma";
-  
-  useEffect(() => {
-    setReminders(getReminders());
-    
-    // Listen for cross-component storage updates
-    const handleStorage = () => setReminders(getReminders());
-    window.addEventListener('storage_update', handleStorage);
-    return () => window.removeEventListener('storage_update', handleStorage);
-  }, []);
 
-  const handleReminderToggle = (id) => {
-    toggleReminder(id);
-  };
-
-  const todayReminders = reminders.slice(0, 3); // show only top 3
+  const actions = [
+    {
+      title: "Games",
+      subtitle: "Mind exercises",
+      icon: <Brain className="w-16 h-16 md:w-20 md:h-20 text-emerald-800" strokeWidth={2.4} />,
+      bg: "bg-emerald-100/90 border-emerald-300 hover:bg-emerald-200/90 active:bg-emerald-300",
+      to: "/patient/games"
+    },
+    {
+      title: "Talk",
+      subtitle: "Voice companion",
+      icon: <MessageSquare className="w-16 h-16 md:w-20 md:h-20 text-sky-800" strokeWidth={2.4} />,
+      bg: "bg-sky-100/90 border-sky-300 hover:bg-sky-200/90 active:bg-sky-300",
+      to: "/patient/voice"
+    },
+    {
+      title: "Memories",
+      subtitle: "Family pictures",
+      icon: <Heart className="w-16 h-16 md:w-20 md:h-20 text-rose-700 fill-rose-100" strokeWidth={2.4} />,
+      bg: "bg-rose-100/90 border-rose-300 hover:bg-rose-200/90 active:bg-rose-300",
+      to: "/patient/memory-album"
+    },
+    {
+      title: "Routine",
+      subtitle: "Tea & medicine",
+      icon: <Clock className="w-16 h-16 md:w-20 md:h-20 text-amber-800" strokeWidth={2.4} />,
+      bg: "bg-amber-100/90 border-amber-300 hover:bg-amber-200/90 active:bg-amber-300",
+      to: "/patient/reminders"
+    }
+  ];
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="mb-2">
-        <h2 className="text-3xl font-bold text-primary mb-6">Good Morning, {patientName}</h2>
-        
-        <Card className="bg-gradient-to-br from-blue-50 to-white border-blue-100">
-          <p className="text-xl text-text font-medium mb-6">How are you feeling today?</p>
-          <div className="flex gap-4">
-            <Button variant="secondary" className="flex-1 py-4 text-2xl border-none shadow-sm">
-              <span className="mr-2">🙂</span> Good
-            </Button>
-            <Button variant="secondary" className="flex-1 py-4 text-2xl border-none shadow-sm">
-              <span className="mr-2">😐</span> Okay
-            </Button>
-            <Button variant="secondary" className="flex-1 py-4 text-2xl border-none shadow-sm">
-              <span className="mr-2">😟</span> Not Good
-            </Button>
-          </div>
-        </Card>
+    <div className="flex flex-col items-center justify-center max-w-4xl mx-auto py-6 px-4 text-center">
+      {/* Big, warm, high-contrast greeting */}
+      <div className="mb-10 text-center">
+        <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-3 font-editorial">
+          Good morning, {patientName} 🌸
+        </h1>
+        <p className="text-2xl md:text-3xl text-slate-700 font-semibold">
+          What would you like to do today?
+        </p>
       </div>
 
-      <div>
-        <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Today's Activity</h3>
-        <Card className="border-l-8 border-l-accent flex flex-col sm:flex-row items-center justify-between p-6 gap-6">
-          <div className="flex items-center gap-6">
-            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 text-accent-dark p-5 rounded-2xl min-w-[64px] min-h-[64px] flex items-center justify-center">
-              <Brain size={48} />
+      {/* 4 Big, simple action buttons */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 w-full">
+        {actions.map((act, idx) => (
+          <button
+            key={idx}
+            onClick={() => navigate(act.to)}
+            className={`flex flex-col items-center justify-center p-8 md:p-12 rounded-3xl border-3 shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer ${act.bg}`}
+          >
+            <div className="mb-4 bg-white/90 p-5 rounded-3xl shadow-sm">
+              {act.icon}
             </div>
-            <div>
-              <h4 className="text-2xl font-bold text-text mb-2">Memory Game</h4>
-              <p className="text-slate-600 text-lg">Let's exercise your memory.</p>
-            </div>
-          </div>
-          <Button variant="primary" className="text-xl py-4 px-10 w-full sm:w-auto" onClick={() => navigate('/patient/games/memory')}>
-            Start
-          </Button>
-        </Card>
-      </div>
-
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Today's Reminders</h3>
-          <Button variant="ghost" className="text-primary font-bold" onClick={() => navigate('/patient/reminders')}>
-            See All
-          </Button>
-        </div>
-        
-        <div className="flex flex-col gap-4">
-          {todayReminders.map(reminder => (
-            <Card 
-              key={reminder.id}
-              interactive
-              onClick={() => handleReminderToggle(reminder.id)}
-              className={`p-5 flex items-center justify-between ${reminder.completed ? 'opacity-75' : ''}`}
-            >
-              <div className="flex items-center gap-4">
-                <div className={`flex items-center justify-center min-w-[64px] min-h-[64px] text-4xl rounded-full transition-colors duration-200 ${reminder.completed ? 'bg-emerald-50 text-accent-dark shadow-glow' : 'bg-blue-50 text-primary'}`}>
-                  {reminder.type === 'Medicine' ? '💊' : reminder.type === 'Water' ? '💧' : '📅'}
-                </div>
-                <div>
-                  <h4 className={`text-xl font-bold mb-1 ${reminder.completed ? 'text-slate-500 line-through' : 'text-text'}`}>
-                    {reminder.title}
-                  </h4>
-                  <p className="text-slate-500 font-medium">
-                    {reminder.completed ? '✓ Taken' : `Next reminder: ${reminder.time}`}
-                  </p>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+            <span className="text-3xl md:text-4xl font-black text-slate-900 font-editorial mb-1">
+              {act.title}
+            </span>
+            <span className="text-lg md:text-xl text-slate-700 font-bold">
+              {act.subtitle}
+            </span>
+          </button>
+        ))}
       </div>
     </div>
   );

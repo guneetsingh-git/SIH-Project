@@ -3,10 +3,28 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-background text-text antialiased;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  :root {
+    --primary: #1E3A8A;
+    --accent: #059669;
+    --warm-sun: #F59E0B;
+    --rose-clay: #E06D53;
   }
+
+  body {
+    @apply bg-[#FAF8F5] text-[#1E293B] antialiased;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  h1, h2, h3, .font-editorial {
+    font-family: 'Fraunces', Georgia, serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Fix harsh yellow text selection with a soft, clean emerald tint */
+::selection {
+  background-color: #A7F3D0;
+  color: #064E3B;
 }
 
 @layer components {
@@ -16,7 +34,7 @@
   }
   
   .btn-primary {
-    @apply bg-gradient-to-br from-accent-dark to-emerald-800 text-white shadow-glow hover:from-emerald-800 hover:to-emerald-900 hover:shadow-glow-lg focus:ring-accent-dark;
+    @apply bg-gradient-to-br from-emerald-600 to-emerald-800 text-white shadow-md hover:from-emerald-700 hover:to-emerald-900 focus:ring-emerald-500;
   }
 
   .btn-secondary {
@@ -24,7 +42,7 @@
   }
   
   .btn-outline {
-    @apply bg-transparent text-text border-2 border-slate-300 hover:border-slate-400 focus:ring-slate-300;
+    @apply bg-transparent text-slate-800 border-2 border-slate-300 hover:border-slate-400 focus:ring-slate-300;
   }
 
   /* Minimum tappable area for icon-only controls (elderly / low-vision users) */
@@ -33,7 +51,39 @@
   }
 }
 
-/* Honour the OS "reduce motion" setting: keep feedback, drop the movement */
+/* Keyframe animations for positive feedback & Lumosity-style game badges */
+@keyframes gentle-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.4); }
+  50% { transform: scale(1.03); box-shadow: 0 0 24px 8px rgba(5, 150, 105, 0.25); }
+}
+
+@keyframes warm-ripple {
+  0% { transform: scale(0.96); opacity: 0.7; }
+  100% { transform: scale(1.02); opacity: 1; }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(1.5deg); }
+}
+
+.animate-reward-pulse {
+  animation: gentle-pulse 1.2s ease-in-out infinite;
+}
+
+.animate-card-tap {
+  animation: warm-ripple 0.3s ease-out forwards;
+}
+
+.animate-float {
+  animation: floatSlow 4s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: floatSlow 4.5s ease-in-out 1.2s infinite;
+}
+
+/* Respect OS reduced-motion settings */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -45,7 +95,7 @@
   }
 }
 
-/* Custom scrollbar for desktop accessibility */
+/* Accessible custom scrollbars */
 ::-webkit-scrollbar {
   width: 12px;
 }
@@ -57,4 +107,18 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-slate-400;
+}
+@layer base {
+  body {
+    @apply bg-[#FBF9F5] text-[#191919] antialiased;
+    font-family: 'Atkinson Hyperlegible', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 1.125rem; /* 18px baseline for elderly readability */
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, .font-editorial {
+    font-family: 'Newsreader', Georgia, serif;
+    letter-spacing: -0.015em;
+    font-weight: 800;
+  }
 }

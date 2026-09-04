@@ -1,59 +1,43 @@
 import React, { useEffect, useState } from 'react';
-import { Brain, Leaf } from 'lucide-react';
-
-const VISIBLE_MS = 1500;
-const FADE_MS = 400;
-
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+import CognitoLogo from './CognitoLogo';
 
 export default function SplashScreen({ onFinish }) {
-  const [leaving, setLeaving] = useState(false);
-  const reducedMotion = prefersReducedMotion();
+  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    if (reducedMotion) {
-      const timer = setTimeout(onFinish, 600);
-      return () => clearTimeout(timer);
-    }
-
-    const fadeTimer = setTimeout(() => setLeaving(true), VISIBLE_MS);
-    const doneTimer = setTimeout(onFinish, VISIBLE_MS + FADE_MS);
+    const timer = setTimeout(() => setFadeOut(true), 1500);
+    const endTimer = setTimeout(onFinish, 1900);
     return () => {
-      clearTimeout(fadeTimer);
-      clearTimeout(doneTimer);
+      clearTimeout(timer);
+      clearTimeout(endTimer);
     };
-  }, [onFinish, reducedMotion]);
+  }, [onFinish]);
 
   return (
-    <div
+    <div 
       role="status"
       aria-live="polite"
-      aria-label="Smriti Setu is starting"
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 bg-gradient-to-br from-background via-white to-emerald-50 ${
-        leaving ? 'animate-splash-out' : ''
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0B1120] text-white transition-opacity duration-400 ${
+        fadeOut ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
-      <div className={reducedMotion ? '' : 'animate-splash-in'}>
-        <div className="flex items-center justify-center text-primary mb-6">
-          <Brain size={96} />
-          <Leaf size={72} className="text-accent-dark -ml-8 mt-8" />
+      <div className="flex flex-col items-center animate-scale-up">
+        <div className="relative mb-6">
+          <div className="absolute inset-0 bg-emerald-500/20 blur-3xl rounded-full scale-150 animate-pulse" />
+          <CognitoLogo size={96} />
         </div>
-        <h1 className="text-5xl sm:text-6xl font-bold text-primary text-center tracking-tight">
-          Smriti Setu
+        <h1 className="text-5xl md:text-6xl font-black tracking-tight font-editorial text-white mb-2">
+          Cognito
         </h1>
-        <p className="mt-4 text-xl text-slate-600 text-center">
-          Cognitive Support for Every Day
+        <p className="text-lg md:text-xl text-emerald-400 font-bold tracking-wider uppercase">
+          Activating Neural Health
         </p>
       </div>
-
-      <button
-        type="button"
-        onClick={onFinish}
-        className="touch-target px-6 rounded-xl text-lg font-semibold text-primary underline underline-offset-4 focus:outline-none focus:ring-2 focus:ring-primary"
+      <button 
+        onClick={onFinish} 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:bg-white focus:text-black focus:p-2"
       >
-        Skip intro
+        Skip animation
       </button>
     </div>
   );

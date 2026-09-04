@@ -8,24 +8,19 @@ export default function Button({
   fullWidth,
   ...props 
 }) {
-  const baseStyles = "inline-flex items-center justify-center gap-3 rounded-xl font-semibold transition-all duration-200 min-h-[56px] px-6 py-3 outline-none focus:ring-2 focus:ring-offset-2 text-lg shadow-sm active:scale-[0.98]";
+  const baseStyles = "inline-flex items-center justify-center rounded-2xl font-bold transition-all duration-200 min-h-[56px] px-8 py-4 outline-none focus:ring-4 focus:ring-offset-2 text-xl active:scale-[0.97] cursor-pointer shadow-sm select-none";
   
   const variants = {
-    primary: "bg-gradient-to-br from-accent-dark to-emerald-800 text-white shadow-glow hover:from-emerald-800 hover:to-emerald-900 hover:shadow-glow-lg focus:ring-accent-dark",
-    secondary: "bg-white text-primary border-2 border-primary hover:bg-blue-50 hover:shadow-glow-primary focus:ring-primary",
-    outline: "bg-transparent text-text border-2 border-slate-300 hover:border-primary hover:bg-blue-50 focus:ring-slate-300",
-    ghost: "bg-transparent text-text hover:bg-slate-100 shadow-none",
-    warning: "bg-gradient-to-br from-amber-700 to-amber-800 text-white hover:from-amber-800 hover:to-amber-900 focus:ring-warning"
+    primary: "bg-gradient-to-r from-emerald-600 to-teal-700 text-white hover:from-emerald-700 hover:to-teal-800 shadow-emerald-700/20 hover:shadow-lg focus:ring-emerald-400",
+    secondary: "bg-white text-slate-800 border-2 border-slate-300 hover:bg-amber-50/50 hover:border-amber-400 shadow-sm focus:ring-amber-400",
+    outline: "bg-transparent text-slate-700 border-2 border-slate-300 hover:border-slate-500 focus:ring-slate-400",
+    ghost: "bg-transparent text-slate-700 hover:bg-amber-100/40 shadow-none",
+    warm: "bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700 shadow-amber-500/25 hover:shadow-lg focus:ring-amber-400"
   };
 
   return (
     <button 
-      className={cn(
-        baseStyles, 
-        variants[variant], 
-        fullWidth && "w-full",
-        className
-      )}
+      className={cn(baseStyles, variants[variant], fullWidth && "w-full", className)}
       {...props}
     >
       {children}

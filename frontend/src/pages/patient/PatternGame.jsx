@@ -1,101 +1,92 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
-import GameFeedback from '../../components/GameFeedback';
-import { saveGameProgress, getGames } from '../../utils/storage';
-import { calculateNewDifficulty, getDifficultyMessage } from '../../utils/adaptiveDifficulty';
 
-const STAGES = {
-  INTRO: 'INTRO',
-  QUESTION: 'QUESTION',
-  RESULT: 'RESULT'
-};
+const PATTERN_LEVELS = [
+  { sequence: ['🔵', '🟢', '🔵', '🟢'], answer: '🔵', options: ['🔵', '🟢', '🟡'] },
+  { sequence: ['🌺', '🍃', '🌺', '🍃'], answer: '🌺', options: ['🌺', '🍃', '☀️'] },
+  { sequence: ['🔶', '🔷', '🔶', '🔷'], answer: '🔶', options: ['🔶', '🔷', '🟣'] },
+  { sequence: ['☀️', '🌙', '☀️', '🌙'], answer: '☀️', options: ['☀️', '🌙', '⭐'] }
+];
+
+const COMPLIMENTS = [
+  "✨ Brilliant pattern recognition! Your eye for symmetry is remarkable!",
+  "🌸 Wonderful insight! You caught the sequence without a moment's hesitation!",
+  "🌿 Splendid focus! Keeping order and patterns active preserves clarity!"
+];
 
 export default function PatternGame() {
   const navigate = useNavigate();
-  const [stage, setStage] = useState(STAGES.INTRO);
+  const [levelIndex, setLevelIndex] = useState(0);
+  const [stage, setStage] = useState('INTRO');
   const [feedback, setFeedback] = useState(null);
-  const [result, setResult] = useState(null);
-  const startTime = useRef(null);
+  const [compliment, setCompliment] = useState("");
 
-  const startGame = () => {
-    setStage(STAGES.QUESTION);
-    startTime.current = Date.now();
-  };
+  const currentLevel = PATTERN_LEVELS[levelIndex % PATTERN_LEVELS.length];
 
-  const handleAnswer = (answer) => {
-    const isCorrect = answer === '🔵';
-    const reactionTime = (Date.now() - startTime.current) / 1000;
-    
-    setFeedback({
-      message: isCorrect ? "Correct!" : "Good try. Let's look at the pattern again.",
-      correct: isCorrect
-    });
-    
-    if (isCorrect || !isCorrect) {
-      setTimeout(() => {
-        const games = getGames();
-        const currentDiff = games.pattern?.difficulty || 1;
-        const accuracy = isCorrect ? 100 : 0;
-        const newDiff = calculateNewDifficulty(currentDiff, accuracy, reactionTime);
-        const diffMessage = getDifficultyMessage(currentDiff, newDiff, 'Pattern Game');
-        
-        const gameResult = {
-          score: isCorrect ? 10 : 0,
-          accuracy: accuracy,
-          reactionTime: parseFloat(reactionTime.toFixed(1)),
-          difficulty: newDiff
-        };
-        
-        saveGameProgress('pattern', gameResult);
-        
-        setResult({
-          ...gameResult,
-          diffMessage
-        });
-        setStage(STAGES.RESULT);
-        setFeedback(null);
-      }, 1500);
+  const handleSelect = (option) => {
+    const isCorrect = option === currentLevel.answer;
+    setCompliment(COMPLIMENTS[Math.floor(Math.random() * COMPLIMENTS.length)]);
+
+    if (isCorrect) {
+      setFeedback("🌸 Splendid! You solved the weave correctly!");
+    } else {
+      setFeedback("🌿 Great attempt! Looking for patterns nurtures mental agility.");
     }
+
+    setTimeout(() => {
+      setFeedback(null);
+      if (levelIndex < PATTERN_LEVELS.length - 1) {
+        setLevelIndex(prev => prev + 1);
+      } else {
+        setStage('RESULT');
+      }
+    }, 1500);
   };
 
   return (
-    <div className="flex flex-col h-full max-w-2xl mx-auto items-center justify-center pt-10">
-      {stage === STAGES.INTRO && (
-        <Card className="w-full text-center p-10 flex flex-col items-center">
-          <div className="text-6xl mb-6">🔷</div>
-          <h2 className="text-3xl font-bold text-text mb-4">Pattern Game</h2>
-          <p className="text-xl text-slate-600 mb-10">Find what comes next in the sequence.</p>
-          <Button variant="primary" className="py-4 px-12 text-2xl" onClick={startGame}>
-            Start Activity
+    <div className="flex flex-col h-full max-w-xl mx-auto items-center justify-center pt-4">
+      {stage === 'INTRO' && (
+        <Card className="w-full text-center p-10 bg-white rounded-3xl border-2 border-slate-200 shadow-xl">
+          <div className="text-7xl mb-4">🔷</div>
+          <h2 className="text-3xl font-black text-slate-900 font-editorial mb-3">Pattern Weave</h2>
+          <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+            Look at the rhythm of the sequence and choose the shape or symbol that naturally fits next.
+          </p>
+          <Button variant="primary" className="py-4 px-10 text-xl font-bold" onClick={() => setStage('QUESTION')}>
+            Start Weaving
           </Button>
         </Card>
       )}
 
-      {stage === STAGES.QUESTION && (
-        <div className="w-full text-center animate-fade-in">
+      {stage === 'QUESTION' && (
+        <div className="w-full text-center">
           {feedback ? (
-            <GameFeedback message={feedback.message} correct={feedback.correct} />
+            <div className="text-2xl md:text-3xl font-bold p-10 rounded-3xl text-emerald-900 bg-emerald-100/90 border-2 border-emerald-300">
+              {feedback}
+            </div>
           ) : (
             <>
-              <h2 className="text-3xl font-bold text-text mb-12">What comes next?</h2>
+              <div className="inline-block bg-blue-100 text-blue-900 text-xs font-bold px-3 py-1 rounded-full mb-4">
+                Pattern {levelIndex + 1} of {PATTERN_LEVELS.length}
+              </div>
+              <h2 className="text-3xl font-black text-slate-800 mb-8 font-editorial">What comes next?</h2>
               
-              <Card className="bg-white py-12 px-6 mb-12 flex justify-center gap-4 text-5xl sm:text-6xl">
-                <span>🔵</span>
-                <span>🟢</span>
-                <span>🔵</span>
-                <span>🟢</span>
-                <span className="text-slate-300 font-bold border-b-4 border-slate-300 pb-2 px-2">?</span>
+              <Card className="bg-white py-10 px-6 mb-8 flex items-center justify-center gap-4 text-5xl rounded-3xl border-2 border-slate-200 shadow-xs">
+                {currentLevel.sequence.map((item, idx) => (
+                  <span key={idx}>{item}</span>
+                ))}
+                <span className="text-slate-300 font-bold border-b-4 border-slate-300 pb-1 px-2">?</span>
               </Card>
 
-              <div className="grid grid-cols-3 gap-6">
-                {['🔵', '🟢', '🟡'].map(option => (
+              <div className="grid grid-cols-3 gap-5">
+                {currentLevel.options.map(option => (
                   <Card 
                     key={option} 
                     interactive 
-                    className="flex items-center justify-center py-10 text-5xl sm:text-6xl hover:bg-blue-50 transition-colors"
-                    onClick={() => handleAnswer(option)}
+                    className="flex items-center justify-center py-8 text-5xl hover:bg-emerald-50 rounded-2xl border-2 border-slate-200 cursor-pointer active:scale-95"
+                    onClick={() => handleSelect(option)}
                   >
                     {option}
                   </Card>
@@ -106,34 +97,13 @@ export default function PatternGame() {
         </div>
       )}
 
-      {stage === STAGES.RESULT && result && (
-        <Card className="w-full p-10 flex flex-col items-center text-center animate-fade-in">
-          <h2 className="text-4xl font-bold text-primary mb-2">Great work!</h2>
-          <p className="text-xl text-slate-600 mb-8">Activity completed successfully.</p>
-          
-          <div className="grid grid-cols-2 w-full gap-4 mb-8">
-            <div className="bg-slate-50 p-6 rounded-2xl">
-              <div className="text-sm font-bold text-slate-400 uppercase">Score</div>
-              <div className="text-3xl font-bold text-text">{result.score} / 10</div>
-            </div>
-            <div className="bg-slate-50 p-6 rounded-2xl">
-              <div className="text-sm font-bold text-slate-400 uppercase">Accuracy</div>
-              <div className="text-3xl font-bold text-text">{result.accuracy}%</div>
-            </div>
-            <div className="bg-slate-50 p-6 rounded-2xl col-span-2">
-              <div className="text-sm font-bold text-slate-400 uppercase">Time</div>
-              <div className="text-3xl font-bold text-text">{result.reactionTime} seconds</div>
-            </div>
-          </div>
-          
-          <div className="bg-blue-50 border border-blue-100 w-full p-6 rounded-2xl mb-8 flex flex-col items-center">
-            <span className="text-2xl mb-2">🤖</span>
-            <h4 className="font-bold text-primary mb-1">Your activities are being personalized</h4>
-            <p className="text-slate-700">{result.diffMessage}</p>
-          </div>
-          
+      {stage === 'RESULT' && (
+        <Card className="w-full p-10 flex flex-col items-center text-center bg-white rounded-3xl border-2 border-emerald-200 shadow-xl">
+          <div className="text-7xl mb-4">🌟</div>
+          <h2 className="text-4xl font-black text-slate-900 font-editorial mb-3">Pattern Completed!</h2>
+          <p className="text-xl text-emerald-800 font-bold mb-8 max-w-md leading-relaxed">{compliment}</p>
           <Button variant="primary" fullWidth className="py-4 text-xl" onClick={() => navigate('/patient/games')}>
-            Next Activity
+            Return to Games
           </Button>
         </Card>
       )}
